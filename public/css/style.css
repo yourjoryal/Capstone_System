@@ -131,7 +131,7 @@ button.faculty:hover {
 
 .login-image {
     flex: 1;
-    background-image: url('public/images/bsitbuilding.png'); 
+    background-image: url('../images/bsitbuilding.png'); 
     background-size: cover;
     background-position: center;
 }
