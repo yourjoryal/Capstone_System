@@ -1,0 +1,137 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1f1f2e; 
+    color: #e0e0e0; 
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+
+.login-form {
+    flex: 1;
+    background-color: #111122; 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    color: #e0e0e0;
+}
+
+.logo-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-section img.logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid #00c8ff;
+    margin-bottom: 15px;
+}
+
+.login-form h2 {
+    margin-bottom: 5px;
+    font-weight: normal;
+    color: #00c8ff;
+}
+
+.login-form p {
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    color: #00ffb3;
+}
+
+form {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="email"], input[type="password"] {
+    padding: 12px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1f1f2e;
+    color: #e0e0e0;
+}
+
+input::placeholder {
+    color: #999;
+}
+
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+
+.options a {
+    color: #00c8ff;
+    text-decoration: none;
+}
+
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-bottom: 10px;
+}
+
+
+button.student {
+    background-color: #00c8ff;
+    color: #111122;
+}
+
+button.student:hover {
+    background-color: #00ffb3;
+}
+
+
+button.faculty {
+    background-color: #28a745; 
+    color: #111122;
+}
+
+button.faculty:hover {
+    background-color: #1e7e34;
+}
+
+.signup-text {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.85rem;
+}
+
+.signup-text a {
+    color: #00c8ff;
+    text-decoration: none;
+}
+
+
+.login-image {
+    flex: 1;
+    background-image: url('public/images/bsitbuilding.png'); 
+    background-size: cover;
+    background-position: center;
+}
