@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Announcements</title>
+  <link rel="stylesheet" href="announcements.css">
+</head>
+<body>
+
+  <!-- FIXED HEADER -->
+  <header>
+    <div class="logo">
+      <img src="public/images/bsitlogo.jpg" alt="BSIT Logo">
+      <span>BSIT Department</span>
+    </div>
+
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+  </header>
+
+  <!-- SUBHEADER -->
+  <div class="sub-header">
+    <a href="#about">About</a>
+    <a href="#vision">Vision</a>
+    <a href="#mission">Mission</a>
+    <a href="#goals">Goals</a>
+    <a href="#outcome">Outcome</a>
+    <a href="#contacts">Contacts</a>
+  </div>
+
+  <!-- SIDE MENU -->
+  <div id="sideMenu" class="side-menu">
+    <a href="profile.html">Profile</a>
+    <a href="faculty.html">Faculty</a>
+    <a href="organizations.html">Student Organizations</a>
+    <a href="announcements.html">Announcements</a>
+    <a href="events.html">Events</a>
+    <a href="achievements.html">Achievements</a>
+    <a href="inquiries.html">Inquiries</a>
+  </div>
+
+  <!-- ANNOUNCEMENT HEADER -->
+  <section class="announcement-banner">
+    <h1>Announcements</h1>
+    <p class="sub">Stay updated with our latest events & news</p>
+  </section>
+
+  <!-- ANNOUNCEMENT CARDS -->
+  <main class="announcements-container">
+
+    <div class="announcement-card">
+      <div class="thumb">
+        <img src="https://picsum.photos/600/400?random=101" alt="">
+      </div>
+      <div class="content">
+        <h2 class="title">Community Outreach Day</h2>
+        <p class="date">Dec 15, 2025</p>
+        <p class="description">Join us in giving back to the community with volunteer work and activities.</p>
+      </div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="thumb">
+        <img src="https://picsum.photos/600/400?random=102" alt="">
+      </div>
+      <div class="content">
+        <h2 class="title">Winter Art Exhibition</h2>
+        <p class="date">Jan 8, 2026</p>
+        <p class="description">Showcasing works from talented local artists — paintings, sculptures, digital art.</p>
+      </div>
+    </div>
+
+    <div class="announcement-card">
+      <div class="thumb">
+        <img src="https://picsum.photos/600/400?random=103" alt="">
+      </div>
+      <div class="content">
+        <h2 class="title">Campus Music Festival</h2>
+        <p class="date">Feb 20, 2026</p>
+        <p class="description">Live performances, food stalls, games, and an amazing music night!</p>
+      </div>
+    </div>
+
+  </main>
+
+    <script>
+  const sideMenu = document.getElementById("sideMenu");
+  const hamburger = document.querySelector(".hamburger");
+
+  // Toggle menu when hamburger clicked
+  hamburger.addEventListener("click", () => {
+    sideMenu.classList.toggle("open");
+  });
+
+  // Close menu if clicked outside
+  document.addEventListener("click", (e) => {
+    if (!sideMenu.contains(e.target) && !hamburger.contains(e.target)) {
+      sideMenu.classList.remove("open");
+    }
+  });
+</script>
+
+</body>
+</html>
