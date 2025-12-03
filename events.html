@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newspaper Collage Events</title>
+<link rel="stylesheet" href="events.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="logo">
+    <img src="public/images/bsitlogo.jpg" alt="BSIT Logo">
+    <span>BSIT Department</span>
+  </div>
+  <div class="hamburger" onclick="toggleMenu()">☰</div>
+  <h1>EVENTS BULLETIN</h1>
+</header>
+
+<div id="sideMenu" class="side-menu">
+  <a href="profile.html">Profile</a>
+  <a href="faculty.html">Faculty</a>
+  <a href="organizations.html">Student Organizations</a>
+  <a href="announcements.html">Announcements</a>
+  <a href="events.html">Events</a>
+  <a href="achievements.html">Achievements</a>
+  <a href="inquiries.html">Inquiries</a>
+</div>
+
+<main class="news-container">
+  <article class="news-item">
+    <img src="https://picsum.photos/450/300?random=1" class="news-img">
+    <h2 class="headline">Acquaintance Party</h2>
+    <p class="meta">September, 2025 · 6:00 PM</p>
+    <p class="summary">Industry leaders gather to explore innovations in AI, robotics, and virtual reality.</p>
+    <p class="full-text">Join top engineers and visionaries for a day of keynotes, workshops, and live demos. Discover groundbreaking technologies shaping our future.</p>
+  </article>
+
+  <article class="news-item">
+    <img src="https://picsum.photos/450/300?random=2" class="news-img">
+    <h2 class="headline">Art & Culture Festival</h2>
+    <p class="meta">Jan 5, 2026 · 1:00 PM</p>
+    <p class="summary">A celebration of traditional music, dance, crafts, and community creativity.</p>
+    <p class="full-text">Experience live cultural performances, workshops, handmade crafts, and delicious food stalls. Perfect for families and art enthusiasts.</p>
+  </article>
+
+  <article class="news-item">
+    <img src="https://picsum.photos/450/300?random=3" class="news-img">
+    <h2 class="headline">Music Festival</h2>
+    <p class="meta">Feb 14, 2026 · 5:00 PM</p>
+    <p class="summary">A night of live bands, street food, and unforgettable concert vibes.</p>
+    <p class="full-text">Enjoy performances from emerging artists and top musicians in a vibrant open-air venue.</p>
+  </article>
+
+  <article class="news-item">
+    <img src="https://picsum.photos/450/300?random=3" class="news-img">
+    <h2 class="headline">Music Festival</h2>
+    <p class="meta">Feb 14, 2026 · 5:00 PM</p>
+    <p class="summary">A night of live bands, street food, and unforgettable concert vibes.</p>
+    <p class="full-text">Enjoy performances from emerging artists and top musicians in a vibrant open-air venue.</p>
+  </article>
+
+  <article class="news-item">
+    <img src="https://picsum.photos/450/300?random=3" class="news-img">
+    <h2 class="headline">Music Festival</h2>
+    <p class="meta">Feb 14, 2026 · 5:00 PM</p>
+    <p class="summary">A night of live bands, street food, and unforgettable concert vibes.</p>
+    <p class="full-text">Enjoy performances from emerging artists and top musicians in a vibrant open-air venue.</p>
+  </article>
+</main>
+
+<script>
+const sideMenu = document.getElementById("sideMenu");
+const hamburger = document.querySelector(".hamburger");
+
+// Toggle menu open/close
+function toggleMenu() {
+  sideMenu.classList.toggle("open");
+}
+
+// Close menu if clicking outside
+document.addEventListener("click", (e) => {
+  if (!sideMenu.contains(e.target) && !hamburger.contains(e.target)) {
+    sideMenu.classList.remove("open");
+  }
+});
+</script>
+
+</body>
+</html>
