@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSITS Officers | CTU BSIT</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="public/css/student-org.css">
+
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <img src="public/images/bsitlogo.jpg" alt="BSIT Logo">
+        <span>BSIT Department</span>
+    </div>
+
+    <div style="flex: 1;"></div>
+
+    <div class="hamburger" onclick="toggleMenu()">
+        <div></div><div></div><div></div>
+    </div>
+
+    <nav>
+        <ul id="menu">
+            <li><a href="homepage.html">Home</a></li>
+            <li><a href="profile.html">Program Profile</a></li>
+            <li><a href="faculty.html">Faculty</a></li>
+            <li><a href="student-orgs.html">Student Organizations</a></li>
+            <li><a href="announcements.html">Announcements</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="achievements.html">Achievements</a></li>
+            <li><a href="inquiries.html">Inquiries</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+<section id="org-chart">
+    <h2>Philppines Society of Information Technology Students Officers</h2>
+
+    <div class="chart-container">
+
+        <!-- Adviser -->
+        <div class="chart-level">
+            <div class="chart-card">
+                <img src="public/images/buhia.png" alt="Adviser">
+                <h3>JAE-AN BUHIA</h3>
+                <p>Adviser</p>
+            </div>
+        </div>
+
+        <!-- Governor + Vice Governor -->
+        <div class="chart-level">
+            <div class="chart-card">
+                <img src="public/images/cadenas.png" alt="Governor">
+                <h3>Governor</h3>
+                <p>MARK AX'L CADENAS</p>
+            </div>
+            <div class="chart-card">
+                <img src="public/images/hortezuela.png" alt="Vice Governor">
+                <h3>Vice Governor</h3>
+                <p>CRESENTE HORTEZUELA JR.</p>
+            </div>
+        </div>
+
+        <!-- Secretary, Treasurer, Auditor -->
+        <div class="chart-level">
+            <div class="chart-card">
+                <img src="public/images/calvo.png" alt="Secretary">
+                <h3>KHIAN HARVEY CALVO</h3>
+                <p>Secretary</p>
+            </div>
+
+            <div class="chart-card">
+                <img src="public/images/cabillada.png" alt="Treasurer">
+                <h3>CHENYL CABILLADA</h3>
+                <p>Treasurer</p>
+            </div>
+
+            <div class="chart-card">
+                <img src="public/images/balvez.png" alt="Auditor">
+                <h3>JAY-AN BALVEZ</h3>
+                <p>Auditor</p>
+            </div>
+        </div>
+
+        <!-- PIO (2 persons) -->
+        <div class="chart-level">
+            <div class="chart-card">
+                <img src="public/images/estanero.png" alt="PIO">
+                <h3>BRYLLE ESTANERO</h3>
+                <p>PIO</p>
+            </div>
+
+            <div class="chart-card">
+                <img src="public/images/alarcon.png" alt="PIO">
+                <h3>CHARLES DAVE ALARCON</h3>
+                <p>PIO</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+</main>
+
+<script>
+function toggleMenu() {
+    document.getElementById("menu").classList.toggle("show");
+}
+
+window.onclick = function(event) {
+    const menu = document.getElementById("menu");
+    const hamburger = document.querySelector(".hamburger");
+    if (!menu.contains(event.target) && !hamburger.contains(event.target)) {
+        menu.classList.remove("show");
+    }
+};
+</script>
+
+<footer>
+    &copy; 2025 CTU BSIT Department. All Rights Reserved.
+</footer>
+
+</body>
+</html>
