@@ -7,16 +7,23 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="public/css/loginstudent.css">
 </head>
+
 <body>
     <div class="login-container">
         <h1>Student Login</h1>
-        <form action="studentdashboard.html" method="post">
+
+        <!-- Redirect to homepage.html after login -->
+        <form action="homepage.html" method="post">
             <input type="text" name="studentID" placeholder="Student ID" required>
             <input type="password" name="password" placeholder="Password" required>
-            <a href="homepage.html" class="btn-login">Login</a>
+
+            <!-- Submit button -->
+            <button type="submit" class="btn-login">Login</button>
         </form>
+
         <div class="links">
-            <a href="#">Forgot Password?</a> | <a href="index.html">Back to Home</a>
+            <a href="#">Forgot Password?</a> | 
+            <a href="index.html">Back to Home</a>
         </div>
     </div>
 </body>
