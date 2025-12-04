@@ -1,0 +1,97 @@
+/* ----- DARK BLUE THEME ----- */
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body{
+  background: #0a1228;              /* Deep dark blue background */
+  color: #e0e8ff;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* Container */
+.container{
+  width: 100%;
+  max-width: 650px;
+  background: #0f1b3d;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 0 25px rgba(0, 195, 255, 0.2);
+  border: 1px solid rgba(0, 195, 255, 0.3);
+}
+
+/* Title */
+h1{
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 700;
+  color: #60eaff;
+}
+
+.subtitle{
+  text-align: center;
+  margin-bottom: 25px;
+  color: #b7c9ff;
+}
+
+/* Form box */
+.form-box{
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+label{
+  font-size: 0.95rem;
+  color: #d4e2ff;
+}
+
+input, textarea{
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px;
+  background: #0b1430;
+  border: 1px solid #264d8f;
+  border-radius: 10px;
+  color: white;
+  transition: .2s;
+}
+
+input:focus, textarea:focus{
+  border-color: #00d0ff;
+  box-shadow: 0 0 12px rgba(0, 208, 255, 0.4);
+  outline: none;
+}
+
+/* Button */
+.btn{
+  background: #008cff;
+  border: none;
+  padding: 14px;
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: .25s;
+}
+
+.btn:hover{
+  background: #00c8ff;
+  box-shadow: 0 0 15px rgba(0, 238, 255, 0.6);
+  transform: scale(1.03);
+}
+
+/* Responsive */
+@media(max-width: 480px){
+  .container{
+    padding: 20px;
+  }
+}
