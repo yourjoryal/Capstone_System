@@ -6,18 +6,55 @@
     <title>Faculty Login | CTU</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="public/css/loginfaculty.css">
+
+    <style>
+        /* Remove underline from all links */
+        a {
+            text-decoration: none;
+        }
+
+        /* Optional: make links look cleaner */
+        .links a {
+            color: #003366; /* adjust to your theme color */
+            font-weight: 400;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background-color: #004c99; /* match your theme */
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            background-color: #003366;
+        }
+    </style>
 </head>
+
 <body>
     <div class="login-container">
         <h1>Faculty Login</h1>
-        <form action="facultydashboard.html" method="post">
+
+        <form action="homepage.html" method="post">
             <input type="text" name="facultyID" placeholder="Faculty ID" required>
             <input type="password" name="password" placeholder="Password" required>
-           <a href="homepage.html" class="btn-login">Login</a>
 
+            <!-- Fixed: Real button instead of anchor -->
+            <button type="submit" class="btn-login">Login</button>
         </form>
+
         <div class="links">
-            <a href="#">Forgot Password?</a> | <a href="index.html">Back to Home</a>
+            <a href="#">Forgot Password?</a> |
+            <a href="index.html">Back</a>
         </div>
     </div>
 </body>
