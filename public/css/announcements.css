@@ -58,25 +58,6 @@
       display: block;
     }
 
-    /* ----- SUBHEADER NAV ----- */
-    .sub-header {
-      position: fixed;
-      top: 70px;
-      width: 100%;
-      padding: 12px 0;
-      background: rgba(10, 15, 36, 0.95);
-      border-bottom: 1px solid #1e2a54;
-      display: flex;
-      justify-content: center;
-      gap: 25px;
-      z-index: 1050;
-    }
-
-    .sub-header a:hover {
-      color: #4cc9f0;
-      transition: 0.3s;
-    }
-
     /* ----- SIDE MENU ----- */
     .side-menu {
       position: fixed;
@@ -172,3 +153,12 @@
       font-size: 1rem;
       line-height: 1.6;
     }
+
+    /* FOOTER */
+footer {
+    text-align: center;
+    padding: 18px;
+    background: #0f1a3b;
+    font-size: 14px;
+    color: #a8b4d4;
+}
