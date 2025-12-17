@@ -41,6 +41,31 @@ if (isset($_POST['add_event'])) {
   }
 }
 
+/* UPDATE EVENT */
+if (isset($_POST['update_event']) && $edit_mode) {
+    $title = mysqli_real_escape_string($conn, $_POST['title']);
+    $event_date = mysqli_real_escape_string($conn, $_POST['event_date']);
+    $description = mysqli_real_escape_string($conn, $_POST['description']);
+    $image_sql = "";
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
+        $image_name = $_FILES['image']['name'];
+        $image_tmp  = $_FILES['image']['tmp_name'];
+        $new_image = time() . "_" . $image_name;
+        $upload_path = "public/images/" . $new_image;
+
+        if (move_uploaded_file($image_tmp, $upload_path)) {
+            $image_sql = ", image='$new_image'";
+        }
+    }
+
+    $update = "UPDATE events SET title='$title', event_date='$event_date', description='$description' $image_sql WHERE id=$edit_id";
+    mysqli_query($conn, $update);
+
+    header("Location: events.php?success=2");
+    exit();
+}
+
 /* DELETE EVENT */
 if (isset($_GET['delete'])) {
   $id = (int) $_GET['delete'];
@@ -200,12 +225,25 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
   <?php } ?>
 
  <form method="POST" enctype="multipart/form-data">
-    <input type="text" name="title" placeholder="Event Title" required>
-    <input type="text" name="event_date" placeholder="Event Date (e.g. Jan 31, 2025 · 6:00 PM)" required>
-    <textarea name="description" placeholder="Event Description" required></textarea>
-    <input type="file" name="image" accept="image/*" required>
-    <button type="submit" name="add_event">Add Event</button>
+    <input type="text" name="title" placeholder="Event Title" required
+           value="<?php echo htmlspecialchars($edit_title); ?>">
+    <input type="text" name="event_date" placeholder="Event Date (e.g. Jan 31, 2025 · 6:00 PM)" required
+           value="<?php echo htmlspecialchars($edit_date); ?>">
+    <textarea name="description" placeholder="Event Description" required><?php echo htmlspecialchars($edit_description); ?></textarea>
+    <input type="file" name="image" accept="image/*">
+    
+    <?php if ($edit_mode && $edit_image) { ?>
+        <p>Current Image:</p>
+        <img src="public/images/<?php echo $edit_image; ?>" alt="Current Image" style="width:120px; display:block; margin-bottom:10px;">
+    <?php } ?>
+    
+    <button type="submit" name="<?php echo $edit_mode ? 'update_event' : 'add_event'; ?>">
+        <?php echo $edit_mode ? 'Update Event' : 'Add Event'; ?>
+    </button>
   </form>
+      <?php if (isset($_GET['success']) && $_GET['success'] == 2) { ?>
+        <p class="success">Event updated successfully!</p>
+      <?php } ?>
 </div>
 
 <!-- EVENTS LIST -->
@@ -230,6 +268,13 @@ if (mysqli_num_rows($result) > 0) {
          onclick="return confirm('Are you sure you want to delete this event?');">
          Delete
       </a>
+
+      <!-- EDIT BUTTON -->
+        <a href="events.php?edit=<?php echo $row['id']; ?>" 
+          class="delete-btn" 
+          style="background: linear-gradient(135deg, #4361ee, #4cc9f0); margin-left:10px;">
+          Edit
+        </a>
     </div>
   </div>
 <?php
