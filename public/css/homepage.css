@@ -8,8 +8,8 @@
 #welcome {
     background: linear-gradient(135deg, rgba(8,17,43,0.6), rgba(10,15,36,0.6)),
                 url("../images/bsitbuilding.png") no-repeat center center;
-    background-size: cover; /* makes the image fit fully */
-    background-blend-mode: overlay; /* gradient overlays image for readability */
+    background-size: cover;
+    background-blend-mode: overlay;
 }
 
 /* OTHER SECTIONS KEEP GRADIENTS */
@@ -164,10 +164,6 @@ p {
     line-height: 1.6;
 }
 
-
-#welcome { background: linear-gradient(135deg,#08112b,#0a0f24);
-background-image: url("../images/bsitbuilding.png");
-}
 #about { background: linear-gradient(135deg,#0a0f24,#0f1a3b); }
 #vision { background: linear-gradient(135deg,#0f1a3b,#0a0f24); }
 #mission { background: linear-gradient(135deg,#0a0f24,#0f1a3b); }
