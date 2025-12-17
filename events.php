@@ -5,7 +5,7 @@ if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-/* ===== INITIALIZE EDIT VARIABLES ===== */
+/* ===== INITIALIZE VARIABLES ===== */
 $edit_mode = false;
 $edit_id = 0;
 $edit_title = '';
@@ -13,7 +13,7 @@ $edit_date = '';
 $edit_description = '';
 $edit_image = '';
 
-/* CHECK IF EDIT MODE */
+/* ===== CHECK IF EDIT MODE ===== */
 if (isset($_GET['edit'])) {
     $edit_id = (int)$_GET['edit'];
     $edit_result = mysqli_query($conn, "SELECT * FROM events WHERE id=$edit_id");
