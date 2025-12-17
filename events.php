@@ -7,18 +7,38 @@ if (!$conn) {
 
 /* ADD EVENT */
 if (isset($_POST['add_event'])) {
+
   $title = mysqli_real_escape_string($conn, $_POST['title']);
   $event_date = mysqli_real_escape_string($conn, $_POST['event_date']);
   $description = mysqli_real_escape_string($conn, $_POST['description']);
-  $image = mysqli_real_escape_string($conn, $_POST['image']);
 
-  $insert = "INSERT INTO events (title, event_date, description, image)
-             VALUES ('$title', '$event_date', '$description', '$image')";
-  mysqli_query($conn, $insert);
+  /* IMAGE UPLOAD */
+  if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
 
-  // PREVENT FORM RESUBMISSION
-  header("Location: events.php?success=1");
-  exit();
+    $image_name = $_FILES['image']['name'];
+    $image_tmp  = $_FILES['image']['tmp_name'];
+
+    // Rename image to avoid duplicates
+    $new_image = time() . "_" . $image_name;
+    $upload_path = "public/images/" . $new_image;
+
+    if (move_uploaded_file($image_tmp, $upload_path)) {
+
+      $insert = "INSERT INTO events (title, event_date, description, image)
+                 VALUES ('$title', '$event_date', '$description', '$new_image')";
+      mysqli_query($conn, $insert);
+
+      // PREVENT FORM RESUBMISSION
+      header("Location: events.php?success=1");
+      exit();
+
+    } else {
+      echo "❌ Image upload failed.";
+    }
+
+  } else {
+    echo "❌ No image selected.";
+  }
 }
 
 /* DELETE EVENT */
@@ -40,47 +60,112 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Events</title>
-<link rel="stylesheet" href="public/css/events.css">
+<link rel="stylesheet" href="public/css/announcements.css">
 
 <style>
-/* SIMPLE ADMIN FORM */
-.admin-form {
-  background: #fff;
-  color: #000;
-  padding: 20px;
-  max-width: 600px;
-  margin: 120px auto 30px;
-  border-radius: 8px;
-}
-.admin-form h2 {
-  margin-bottom: 15px;
-}
-.admin-form input,
-.admin-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-.admin-form button {
-  background: #0a1a33;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-}
-.delete-btn {
-  display: inline-block;
-  background: crimson;
-  color: #fff;
-  padding: 6px 12px;
-  margin-top: 10px;
-  border-radius: 4px;
-}
-.success {
-  text-align: center;
-  color: green;
-  margin-bottom: 10px;
-}
+  /* ===== ENHANCED ADMIN FORM ===== */
+  .admin-form {
+    background: linear-gradient(135deg, #ffffff, #f3f6ff);
+    color: #000;
+    padding: 30px;
+    max-width: 650px;
+    margin: 140px auto 40px;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Decorative top bar */
+  .admin-form::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background: linear-gradient(90deg, #4cc9f0, #4361ee);
+  }
+
+  .admin-form h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    text-align: center;
+    color: #0a1a33;
+  }
+
+  /* Input fields */
+  .admin-form input,
+  .admin-form textarea {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 14px;
+    border-radius: 8px;
+    border: 1px solid #d0d7ff;
+    font-size: 15px;
+    transition: 0.3s ease;
+  }
+
+  .admin-form textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  /* Focus effect */
+  .admin-form input:focus,
+  .admin-form textarea:focus {
+    border-color: #4361ee;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+  }
+
+  /* Submit button */
+  .admin-form button {
+    width: 100%;
+    background: linear-gradient(135deg, #4361ee, #4cc9f0);
+    color: #fff;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .admin-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(67, 97, 238, 0.35);
+  }
+
+  /* Success message */
+  .success {
+    text-align: center;
+    background: #e6fff4;
+    color: #0f5132;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-weight: 500;
+  }
+
+  /* Delete button (admin actions) */
+  .delete-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #e63946, #ff6b6b);
+    color: #fff;
+    padding: 8px 14px;
+    margin-top: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-decoration: none;
+    transition: 0.3s ease;
+  }
+
+  .delete-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 18px rgba(230, 57, 70, 0.35);
+  }
 </style>
 </head>
 
@@ -114,11 +199,11 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
     <p class="success">Event added successfully!</p>
   <?php } ?>
 
-  <form method="POST">
+ <form method="POST" enctype="multipart/form-data">
     <input type="text" name="title" placeholder="Event Title" required>
     <input type="text" name="event_date" placeholder="Event Date (e.g. Jan 31, 2025 · 6:00 PM)" required>
     <textarea name="description" placeholder="Event Description" required></textarea>
-    <input type="text" name="image" placeholder="Image filename (e.g. sinulog.jpg)" required>
+    <input type="file" name="image" accept="image/*" required>
     <button type="submit" name="add_event">Add Event</button>
   </form>
 </div>
