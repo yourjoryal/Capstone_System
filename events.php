@@ -3,6 +3,8 @@
 $conn = mysqli_connect("localhost", "root", "", "bsit_portal");
 if (!$conn) die("Connection failed: " . mysqli_connect_error());
 
+$error = ''; // initialize error variable
+
 /* INITIALIZE EDIT VARIABLES */
 $edit_mode = false;
 $edit_id = 0;
@@ -32,19 +34,25 @@ if (isset($_POST['add_event'])) {
     $description = mysqli_real_escape_string($conn, $_POST['description']);
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-        $image_name = $_FILES['image']['name'];
-        $image_tmp  = $_FILES['image']['tmp_name'];
-        $new_image = time() . "_" . $image_name;
-        $upload_path = "public/images/" . $new_image;
-
-        if (move_uploaded_file($image_tmp, $upload_path)) {
-            $insert = "INSERT INTO events (title, event_date, description, image)
-                       VALUES ('$title', '$event_date', '$description', '$new_image')";
-            mysqli_query($conn, $insert);
-            header("Location: events.php?success=1");
-            exit();
+        $allowed = ['jpg','jpeg','png','gif','webp'];
+        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        if (!in_array($ext, $allowed)) {
+            $error = "❌ Invalid image type. Allowed: jpg, jpeg, png, gif, webp.";
         } else {
-            $error = "❌ Image upload failed.";
+            $image_name = $_FILES['image']['name'];
+            $image_tmp  = $_FILES['image']['tmp_name'];
+            $new_image = time() . "_" . $image_name;
+            $upload_path = "public/images/" . $new_image;
+
+            if (move_uploaded_file($image_tmp, $upload_path)) {
+                $insert = "INSERT INTO events (title, event_date, description, image)
+                           VALUES ('$title', '$event_date', '$description', '$new_image')";
+                mysqli_query($conn, $insert);
+                header("Location: events.php?success=1");
+                exit();
+            } else {
+                $error = "❌ Image upload failed.";
+            }
         }
     } else {
         $error = "❌ No image selected.";
@@ -59,14 +67,22 @@ if (isset($_POST['update_event'])) {
     $image_sql = "";
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
-        $image_name = $_FILES['image']['name'];
-        $image_tmp  = $_FILES['image']['tmp_name'];
-        $new_image = time() . "_" . $image_name;
-        $upload_path = "public/images/" . $new_image;
+        $allowed = ['jpg','jpeg','png','gif','webp'];
+        $ext = strtolower(pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION));
+        if (!in_array($ext, $allowed)) {
+            $error = "❌ Invalid image type. Allowed: jpg, jpeg, png, gif, webp.";
+        } else {
+            $image_name = $_FILES['image']['name'];
+            $image_tmp  = $_FILES['image']['tmp_name'];
+            $new_image = time() . "_" . $image_name;
+            $upload_path = "public/images/" . $new_image;
 
-        if (move_uploaded_file($image_tmp, $upload_path)) {
-            $image_sql = ", image='$new_image'";
-            if (file_exists("public/images/$edit_image")) unlink("public/images/$edit_image");
+            if (move_uploaded_file($image_tmp, $upload_path)) {
+                $image_sql = ", image='$new_image'";
+                if (!empty($edit_image) && file_exists("public/images/$edit_image")) {
+                    unlink("public/images/$edit_image");
+                }
+            }
         }
     }
 
@@ -79,6 +95,15 @@ if (isset($_POST['update_event'])) {
 /* DELETE EVENT */
 if (isset($_GET['delete'])) {
     $id = (int) $_GET['delete'];
+    
+    // Delete image file first
+    $img_res = mysqli_query($conn, "SELECT image FROM events WHERE id=$id");
+    if ($img_row = mysqli_fetch_assoc($img_res)) {
+        if (!empty($img_row['image']) && file_exists("public/images/".$img_row['image'])) {
+            unlink("public/images/".$img_row['image']);
+        }
+    }
+    
     mysqli_query($conn, "DELETE FROM events WHERE id=$id");
     header("Location: events.php");
     exit();
@@ -98,10 +123,10 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
 <style>
 /* ===== ADMIN FORM ===== */
 .announcement-card .thumb img {
-    width: 100%;        /* make the image fill the thumb container width */
-    max-height: 120px;  /* limit the height */
-    object-fit: cover;  /* crops and keeps aspect ratio */
-    border-radius: 8px 8px 0 0; /* optional: rounded top corners */
+    width: 120px;        /* consistent width */
+    height: 120px;       /* consistent height */
+    object-fit: cover;  
+    border-radius: 8px;
     display: block;
 }
 .admin-form {
@@ -112,7 +137,6 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
     margin: 140px auto 40px;
     border-radius: 14px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-    position: relative;
 }
 .admin-form h2 { text-align:center; margin-bottom:20px; }
 .admin-form input, .admin-form textarea {
@@ -129,6 +153,17 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
 }
 .delete-btn.delete { background: linear-gradient(135deg, #e63946, #ff6b6b); }
 .delete-btn.edit { background: linear-gradient(135deg, #4361ee, #4cc9f0); margin-left:10px; }
+.announcements-container {
+    max-width: 900px; margin: 0 auto 60px; display:flex; flex-wrap:wrap; gap:20px;
+}
+.announcement-card {
+    display:flex; background:#f7f9ff; border-radius:12px; overflow:hidden; width:100%;
+    box-shadow:0 8px 20px rgba(0,0,0,0.1);
+}
+.announcement-card .content {
+    padding:16px; flex:1;
+}
+.announcement-card h2 { margin:0 0 8px 0; font-size:18px; }
 </style>
 </head>
 <body>
@@ -152,7 +187,7 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
 
       <?php if ($edit_mode && $edit_image) { ?>
           <p>Current Image:</p>
-          <img src="public/images/<?php echo $edit_image; ?>" style="width:120px; margin-bottom:10px;">
+          <img src="public/images/<?php echo $edit_image; ?>" style="width:120px; margin-bottom:10px; object-fit:cover;">
       <?php } ?>
 
       <button type="submit" name="<?php echo $edit_mode ? 'update_event' : 'add_event'; ?>">
@@ -168,12 +203,12 @@ if (mysqli_num_rows($result) > 0) {
 ?>
   <div class="announcement-card">
     <div class="thumb">
-      <img src="public/images/<?php echo $row['image']; ?>" style="width:120px;">
+      <img src="public/images/<?php echo $row['image']; ?>" alt="<?php echo htmlspecialchars($row['title']); ?>">
     </div>
     <div class="content">
-      <h2><?php echo $row['title']; ?></h2>
-      <p><?php echo $row['event_date']; ?></p>
-      <p><?php echo $row['description']; ?></p>
+      <h2><?php echo htmlspecialchars($row['title']); ?></h2>
+      <p><?php echo htmlspecialchars($row['event_date']); ?></p>
+      <p><?php echo htmlspecialchars($row['description']); ?></p>
       <a href="events.php?delete=<?php echo $row['id']; ?>" class="delete-btn delete" onclick="return confirm('Are you sure?');">Delete</a>
       <a href="events.php?edit=<?php echo $row['id']; ?>" class="delete-btn edit">Edit</a>
     </div>
