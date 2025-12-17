@@ -241,13 +241,13 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
 
     <form method="POST" enctype="multipart/form-data">
         <input type="text" name="title" placeholder="Event Title" required
-               value="<?php echo htmlspecialchars($edit_title); ?>">
+               value="<?php echo htmlspecialchars($edit_title ?? ''); ?>">
         <input type="text" name="event_date" placeholder="Event Date (e.g. Jan 31, 2025 · 6:00 PM)" required
-               value="<?php echo htmlspecialchars($edit_date); ?>">
-        <textarea name="description" placeholder="Event Description" required><?php echo htmlspecialchars($edit_description); ?></textarea>
+               value="<?php echo htmlspecialchars($edit_date ?? ''); ?>">
+        <textarea name="description" placeholder="Event Description" required><?php echo htmlspecialchars($edit_description ?? ''); ?></textarea>
         <input type="file" name="image" accept="image/*">
 
-        <?php if ($edit_mode && $edit_image) { ?>
+        <?php if ($edit_mode && !empty($edit_image)) { ?>
             <p>Current Image:</p>
             <img src="public/images/<?php echo $edit_image; ?>" alt="Current Image" style="width:120px; display:block; margin-bottom:10px;">
         <?php } ?>
@@ -261,7 +261,7 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
 <!-- EVENTS LIST -->
 <main class="announcements-container">
 <?php
-if (mysqli_num_rows($result) > 0) {
+if ($result && mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
 ?>
     <div class="announcement-card">
