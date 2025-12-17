@@ -1,9 +1,7 @@
 <?php
 /* DATABASE CONNECTION */
 $conn = mysqli_connect("localhost", "root", "", "bsit_portal");
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+if (!$conn) die("Connection failed: " . mysqli_connect_error());
 
 /* INITIALIZE EDIT VARIABLES */
 $edit_mode = false;
@@ -36,7 +34,6 @@ if (isset($_POST['add_event'])) {
     if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
         $image_name = $_FILES['image']['name'];
         $image_tmp  = $_FILES['image']['tmp_name'];
-
         $new_image = time() . "_" . $image_name;
         $upload_path = "public/images/" . $new_image;
 
@@ -69,12 +66,12 @@ if (isset($_POST['update_event'])) {
 
         if (move_uploaded_file($image_tmp, $upload_path)) {
             $image_sql = ", image='$new_image'";
+            if (file_exists("public/images/$edit_image")) unlink("public/images/$edit_image");
         }
     }
 
     $update = "UPDATE events SET title='$title', event_date='$event_date', description='$description' $image_sql WHERE id=$edit_id";
     mysqli_query($conn, $update);
-
     header("Location: events.php?success=2");
     exit();
 }
@@ -99,142 +96,46 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
 <title>Events</title>
 <link rel="stylesheet" href="public/css/announcements.css">
 <style>
-    /* ===== ENHANCED ADMIN FORM ===== */
-    .admin-form {
-      background: linear-gradient(135deg, #ffffff, #f3f6ff);
-      color: #000;
-      padding: 30px;
-      max-width: 650px;
-      margin: 140px auto 40px;
-      border-radius: 14px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Decorative top bar */
-    .admin-form::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 6px;
-      background: linear-gradient(90deg, #4cc9f0, #4361ee);
-    }
-
-    .admin-form h2 {
-      margin-bottom: 20px;
-      font-size: 26px;
-      text-align: center;
-      color: #0a1a33;
-    }
-
-    /* Input fields */
-    .admin-form input,
-    .admin-form textarea {
-      width: 100%;
-      padding: 14px;
-      margin-bottom: 14px;
-      border-radius: 8px;
-      border: 1px solid #d0d7ff;
-      font-size: 15px;
-      transition: 0.3s ease;
-    }
-
-    .admin-form textarea {
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    /* Focus effect */
-    .admin-form input:focus,
-    .admin-form textarea:focus {
-      border-color: #4361ee;
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
-    }
-
-    /* Submit button */
-    .admin-form button {
-      width: 100%;
-      background: linear-gradient(135deg, #4361ee, #4cc9f0);
-      color: #fff;
-      padding: 14px;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    .admin-form button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(67, 97, 238, 0.35);
-    }
-
-    /* Success message */
-    .success {
-      text-align: center;
-      background: #e6fff4;
-      color: #0f5132;
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 15px;
-      font-weight: 500;
-    }
-
-    /* Delete button (admin actions) */
-    .delete-btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #e63946, #ff6b6b);
-      color: #fff;
-      padding: 8px 14px;
-      margin-top: 12px;
-      border-radius: 6px;
-      font-size: 14px;
-      text-decoration: none;
-      transition: 0.3s ease;
-    }
-
-    .delete-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 8px 18px rgba(230, 57, 70, 0.35);
-    }
+/* ===== ADMIN FORM ===== */
+.admin-form {
+    background: linear-gradient(135deg, #ffffff, #f3f6ff);
+    color: #000;
+    padding: 30px;
+    max-width: 650px;
+    margin: 140px auto 40px;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    position: relative;
+}
+.admin-form h2 { text-align:center; margin-bottom:20px; }
+.admin-form input, .admin-form textarea {
+    width:100%; padding:14px; margin-bottom:14px; border-radius:8px; border:1px solid #d0d7ff;
+}
+.admin-form textarea { resize:vertical; min-height:120px; }
+.admin-form button {
+    width:100%; padding:14px; border:none; border-radius:10px; cursor:pointer;
+    background: linear-gradient(135deg, #4361ee, #4cc9f0); color:#fff;
+}
+.success { text-align:center; background:#e6fff4; color:#0f5132; padding:12px; border-radius:8px; margin-bottom:15px; font-weight:500; }
+.delete-btn {
+    display:inline-block; padding:8px 14px; border-radius:6px; font-size:14px; text-decoration:none; color:#fff;
+}
+.delete-btn.delete { background: linear-gradient(135deg, #e63946, #ff6b6b); }
+.delete-btn.edit { background: linear-gradient(135deg, #4361ee, #4cc9f0); margin-left:10px; }
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="logo">
-    <img src="public/images/bsitlogo.jpg" alt="BSIT Logo">
-    <span>BSIT Department</span>
-  </div>
-  <div class="hamburger">☰</div>
-</header>
-
-<!-- SIDE MENU -->
-<div id="sideMenu" class="side-menu">
-  <a href="homepage.html">Home</a>
-  <a href="faculty.html">Faculty</a>
-  <a href="organizations.html">Student Organizations</a>
-  <a href="announcements.html">Announcements</a>
-  <a href="events.php">Events</a>
-  <a href="achievements.html">Achievements</a>
-  <a href="inquiries.html">Inquiries</a>
-</div>
-
-<!-- ADD / EDIT EVENT FORM -->
 <div class="admin-form">
   <h2><?php echo $edit_mode ? 'Edit Event' : 'Add New Event'; ?></h2>
 
-  <?php if (!empty($error)) echo "<p class='success'>$error</p>"; ?>
-  <?php if (isset($_GET['success'])) {
-      $msg = $_GET['success'] == 1 ? "Event added successfully!" : "Event updated successfully!";
+  <?php
+  if (!empty($error)) echo "<p class='success'>$error</p>";
+  if (isset($_GET['success'])) {
+      $msg = $_GET['success']==1 ? "Event added successfully!" : "Event updated successfully!";
       echo "<p class='success'>$msg</p>";
-  } ?>
+  }
+  ?>
 
   <form method="POST" enctype="multipart/form-data">
       <input type="text" name="title" placeholder="Event Title" required value="<?php echo htmlspecialchars($edit_title); ?>">
@@ -244,22 +145,15 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
 
       <?php if ($edit_mode && $edit_image) { ?>
           <p>Current Image:</p>
-          <img src="public/images/<?php echo $edit_image; ?>" alt="Current Image" style="width:120px; display:block; margin-bottom:10px;">
+          <img src="public/images/<?php echo $edit_image; ?>" style="width:120px; margin-bottom:10px;">
       <?php } ?>
 
       <button type="submit" name="<?php echo $edit_mode ? 'update_event' : 'add_event'; ?>">
           <?php echo $edit_mode ? 'Update Event' : 'Add Event'; ?>
       </button>
- <form method="POST" enctype="multipart/form-data">
-    <input type="text" name="title" placeholder="Event Title" required>
-    <input type="text" name="event_date" placeholder="Event Date (e.g. Jan 31, 2025 · 6:00 PM)" required>
-    <textarea name="description" placeholder="Event Description" required></textarea>
-    <input type="file" name="image" accept="image/*" required>
-    <button type="submit" name="add_event">Add Event</button>
   </form>
 </div>
 
-<!-- EVENTS LIST -->
 <main class="announcements-container">
 <?php
 if (mysqli_num_rows($result) > 0) {
@@ -267,21 +161,14 @@ if (mysqli_num_rows($result) > 0) {
 ?>
   <div class="announcement-card">
     <div class="thumb">
-      <img src="public/images/<?php echo $row['image']; ?>" alt="Event Image">
+      <img src="public/images/<?php echo $row['image']; ?>" style="width:120px;">
     </div>
     <div class="content">
-      <h2 class="title"><?php echo $row['title']; ?></h2>
-      <p class="date"><?php echo $row['event_date']; ?></p>
-      <p class="description"><?php echo $row['description']; ?></p>
-      <a href="events.php?delete=<?php echo $row['id']; ?>" class="delete-btn" onclick="return confirm('Are you sure you want to delete this event?');">Delete</a>
-      <a href="events.php?edit=<?php echo $row['id']; ?>" class="delete-btn" style="background: linear-gradient(135deg, #4361ee, #4cc9f0); margin-left:10px;">Edit</a>
-
-      <!-- DELETE BUTTON -->
-      <a href="events.php?delete=<?php echo $row['id']; ?>"
-         class="delete-btn"
-         onclick="return confirm('Are you sure you want to delete this event?');">
-         Delete
-      </a>
+      <h2><?php echo $row['title']; ?></h2>
+      <p><?php echo $row['event_date']; ?></p>
+      <p><?php echo $row['description']; ?></p>
+      <a href="events.php?delete=<?php echo $row['id']; ?>" class="delete-btn delete" onclick="return confirm('Are you sure?');">Delete</a>
+      <a href="events.php?edit=<?php echo $row['id']; ?>" class="delete-btn edit">Edit</a>
     </div>
   </div>
 <?php
@@ -291,21 +178,5 @@ if (mysqli_num_rows($result) > 0) {
 }
 ?>
 </main>
-
-<footer>
-© 2025 BSIT Department - Cebu Technological University Tabuelan Campus
-</footer>
-
-<script>
-const sideMenu = document.getElementById("sideMenu");
-const hamburger = document.querySelector(".hamburger");
-
-hamburger.addEventListener("click", () => sideMenu.classList.toggle("open"));
-document.addEventListener("click", (e) => {
-    if (!sideMenu.contains(e.target) && !hamburger.contains(e.target)) {
-        sideMenu.classList.remove("open");
-    }
-});
-</script>
 </body>
 </html>
