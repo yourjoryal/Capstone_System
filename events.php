@@ -123,6 +123,18 @@ header {
 .announcement-banner .sub { opacity:0.8; font-size:1.2rem; }
 
 /* ----- EVENTS CARDS ----- */
+
+.description {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 15px; /* add spacing below description */
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px; /* space between Delete and Edit buttons */
+}
+
 .announcements-container {
   max-width:1000px; margin:40px auto; padding:20px;
   display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px;
@@ -211,8 +223,21 @@ if (mysqli_num_rows($result) > 0) {
       <h2 class="title"><?php echo htmlspecialchars($row['title']); ?></h2>
       <p class="date"><?php echo htmlspecialchars($row['event_date']); ?></p>
       <p class="description"><?php echo htmlspecialchars($row['description']); ?></p>
-      <a href="events.php?delete=<?php echo $row['id']; ?>" style="color:white;background:#e63946;padding:5px 12px;border-radius:6px;margin-right:5px;" onclick="return confirm('Are you sure?');">Delete</a>
-      <a href="events.php?edit=<?php echo $row['id']; ?>" style="color:white;background:#4361ee;padding:5px 12px;border-radius:6px;">Edit</a>
+      <div class="content">
+    <h2 class="title"><?php echo htmlspecialchars($row['title']); ?></h2>
+    <p class="date"><?php echo htmlspecialchars($row['event_date']); ?></p>
+    <p class="description"><?php echo htmlspecialchars($row['description']); ?></p>
+
+    <div class="action-buttons">
+        <a href="events.php?delete=<?php echo $row['id']; ?>" 
+           style="color:white;background:#e63946;padding:5px 12px;border-radius:6px;" 
+           onclick="return confirm('Are you sure?');">Delete</a>
+
+        <a href="events.php?edit=<?php echo $row['id']; ?>" 
+           style="color:white;background:#4361ee;padding:5px 12px;border-radius:6px;">Edit</a>
+    </div>
+</div>
+
     </div>
   </div>
 <?php
