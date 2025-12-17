@@ -99,7 +99,109 @@ $result = mysqli_query($conn, "SELECT * FROM events ORDER BY id DESC");
 <title>Events</title>
 <link rel="stylesheet" href="public/css/announcements.css">
 <style>
-/* --- Your admin-form styles remain the same --- */
+    /* ===== ENHANCED ADMIN FORM ===== */
+    .admin-form {
+      background: linear-gradient(135deg, #ffffff, #f3f6ff);
+      color: #000;
+      padding: 30px;
+      max-width: 650px;
+      margin: 140px auto 40px;
+      border-radius: 14px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Decorative top bar */
+    .admin-form::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: linear-gradient(90deg, #4cc9f0, #4361ee);
+    }
+
+    .admin-form h2 {
+      margin-bottom: 20px;
+      font-size: 26px;
+      text-align: center;
+      color: #0a1a33;
+    }
+
+    /* Input fields */
+    .admin-form input,
+    .admin-form textarea {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 14px;
+      border-radius: 8px;
+      border: 1px solid #d0d7ff;
+      font-size: 15px;
+      transition: 0.3s ease;
+    }
+
+    .admin-form textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    /* Focus effect */
+    .admin-form input:focus,
+    .admin-form textarea:focus {
+      border-color: #4361ee;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
+    }
+
+    /* Submit button */
+    .admin-form button {
+      width: 100%;
+      background: linear-gradient(135deg, #4361ee, #4cc9f0);
+      color: #fff;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .admin-form button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(67, 97, 238, 0.35);
+    }
+
+    /* Success message */
+    .success {
+      text-align: center;
+      background: #e6fff4;
+      color: #0f5132;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-weight: 500;
+    }
+
+    /* Delete button (admin actions) */
+    .delete-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #e63946, #ff6b6b);
+      color: #fff;
+      padding: 8px 14px;
+      margin-top: 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+
+    .delete-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 18px rgba(230, 57, 70, 0.35);
+    }
 </style>
 </head>
 <body>
